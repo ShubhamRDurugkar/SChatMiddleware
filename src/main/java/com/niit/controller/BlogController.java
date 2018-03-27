@@ -25,7 +25,7 @@ public class BlogController
 	@Autowired
 	BlogDAO blogDAO;
 
-	// ------------------- Demo rest -----------------------------------
+	// ------------------- Demo  -----------------------------------
 	@GetMapping(value = "/demo")
 	public ResponseEntity<String> testDemo() {
 		return new ResponseEntity<String>("Demo Rest Controller- Success", HttpStatus.OK);
