@@ -65,7 +65,7 @@ public class ForumController {
 		uforum.setForumName(forum.getForumName());
 		uforum.setCreatedDate(new Date());
 		uforum.setStatus(forum.getStatus());
-		uforum.setUsername(forum.getUsername());
+		uforum.setLoginname(forum.getLoginname());
 		forumDAO.updateForum(uforum);
 		return new ResponseEntity<String>("Update Forum Success", HttpStatus.OK);
 	}
@@ -139,12 +139,19 @@ public class ForumController {
 
 		@PostMapping(value = "/addForumComment")
 		public ResponseEntity<String> addForumComments(@RequestBody ForumComment forumComment) {
+			
+			System.out.println("In AddForumComment() method");
+			forumComment.setForumId(forumComment.getForumId());
 			forumComment.setCommentDate(new Date());
-			Forum forum = forumDAO.getForum(1);
+			forumComment.setCommentText(forumComment.getCommentText());
+			forumComment.setLoginname(forumComment.getLoginname());
+		
+			/*Forum forum = forumDAO.getForum(1);
 			String username = forum.getUsername();
 			int forumId = forum.getForumId();
 			forumComment.setForumId(forumId);
-			forumComment.setUsername(username);
+			forumComment.setUsername(username);*/
+			
 			if (forumDAO.addForumComment(forumComment)) {
 				return new ResponseEntity<String>("ForumComment Added- Success", HttpStatus.OK);
 			} else {
@@ -184,6 +191,7 @@ public class ForumController {
 		// -----------------list Forums ---------------------------------
 		@GetMapping(value = "/listForumComments")
 		public ResponseEntity<List<ForumComment>> listForumComments() {
+			System.out.println("In listForumComments() method");
 			List<ForumComment> listForumComments = forumDAO.listForumComments(1);
 			if (listForumComments.size() != 0) {
 				return new ResponseEntity<List<ForumComment>>(listForumComments, HttpStatus.OK);
