@@ -2,6 +2,8 @@ package com.niit.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +26,13 @@ public class UserController {
 
 	//------------------CheckLogin-----------------
 	@PostMapping(value="/login")
-	public ResponseEntity<UserDetail> checkLogin(@RequestBody UserDetail userDetail)
+	public ResponseEntity<UserDetail> checkLogin(@RequestBody UserDetail userDetail,HttpSession session)
 	{
 		if(userDAO.checkLogin(userDetail))
 		{
 			UserDetail tempUser=(UserDetail)userDAO.getUser(userDetail.getLoginname());
 			userDAO.updateOnlineStatus("Y", tempUser);
+			session.setAttribute("userdetail",tempUser);
 			return new ResponseEntity<UserDetail>(tempUser,HttpStatus.OK);
 		}
 		else
@@ -90,6 +93,7 @@ public class UserController {
 		}
 	}
 
+	//-----------------------Delete user-----------------------
 	@DeleteMapping(value = "/deleteUser/{loginname}")
 	public ResponseEntity<String> deleteUser(@PathVariable("loginname") String loginname) {
 		System.out.println("In delete user" + loginname);
@@ -102,4 +106,8 @@ public class UserController {
 			return new ResponseEntity<String>("User with LoginName " + loginname + " deleted successfully", HttpStatus.OK);
 		}
 	}
+	
+	
+	//--------------------------------------Upload image-----------------------------------------
+	
 }

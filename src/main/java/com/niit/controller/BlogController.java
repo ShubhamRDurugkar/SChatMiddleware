@@ -50,7 +50,7 @@ public class BlogController
 
 	@GetMapping(value = "/listBlogs")
 	public ResponseEntity<List<Blog>> listBlog() {
-		List<Blog> listBlogs = blogDAO.listBlog("shubhamRD");
+		List<Blog> listBlogs = blogDAO.listBlog();
 		if (listBlogs.size() != 0) {
 			return new ResponseEntity<List<Blog>>(listBlogs, HttpStatus.OK);
 		} else {
@@ -72,7 +72,7 @@ public class BlogController
 		mBlog.setBlogContent(blog.getBlogContent());
 		mBlog.setBlogName(blog.getBlogName());
 		mBlog.setCreateDate(new Date());
-		//mBlog.setLikes(blog.getLikes());
+		mBlog.setLikes(blog.getLikes());
 		mBlog.setStatus(blog.getStatus());
 		mBlog.setLoginname(blog.getLoginname());
 		
@@ -207,8 +207,8 @@ public class BlogController
 		}
 		
 		// -----------------increment likes ---------------------------------
-				@PostMapping(value = "/incrementLikes/{blogID}")
-				public ResponseEntity<String> incrementLikes(@PathVariable("blogID")int blogId) {
+				@PostMapping(value = "/incrementLikes/{blogId}")
+				public ResponseEntity<String> incrementLikes(@PathVariable("blogId")int blogId) {
 					System.out.println("Increment likes for BlogId " + blogId);
 					Blog blog = blogDAO.getBlog(blogId);
 					if (blogDAO.incrementLike(blog)) {
