@@ -43,13 +43,13 @@ public class UserController {
 	
 	// ----------------- Register User ---------------
 	@PostMapping(value = "/registerUser")
-	public ResponseEntity<String> registerUser(@RequestBody UserDetail user) {
-		
-		user.setRole("USER");
+	public ResponseEntity<UserDetail> registerUser(@RequestBody UserDetail user) {
+		user.setIsOnline("N");
+		user.setRole("ROLE_USER");
 		if (userDAO.registerUser(user)) {
-			return new ResponseEntity<String>("User Registered Successfully", HttpStatus.OK);
+			return new ResponseEntity<UserDetail>(user, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<String>("User registration failed", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<UserDetail>(user, HttpStatus.NOT_FOUND);
 		}
 	}
 

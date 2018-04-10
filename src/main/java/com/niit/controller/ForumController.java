@@ -42,7 +42,7 @@ public class ForumController {
 
 	@GetMapping(value = "/listForums")
 	public ResponseEntity<List<Forum>> listForum() {
-		List<Forum> listForums = forumDAO.listForum("shubhamRD");
+		List<Forum> listForums = forumDAO.listForum();
 		if (listForums.size() != 0) {
 			return new ResponseEntity<List<Forum>>(listForums, HttpStatus.OK);
 		} else {
