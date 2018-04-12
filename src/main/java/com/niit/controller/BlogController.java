@@ -3,8 +3,6 @@ package com.niit.controller;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,13 +34,11 @@ public class BlogController
 	// ---------------- Add Blog -----------------------------------
 
 	@PostMapping(value = "/addBlog")
-	public ResponseEntity<String> addBlog(@RequestBody Blog blog,HttpSession session) {
-		
-		System.out.println("=====>In addBlog restcontroller");
-		blog.setCreateDate(new java.util.Date());
+	public ResponseEntity<String> addBlog(@RequestBody Blog blog) {
+		blog.setCreateDate(new Date());
 		blog.setLikes(0);
 		blog.setStatus("NA");
-		blog.setLoginname((String) session.getAttribute("loginname"));
+		blog.setLoginname("Shubham");
 		if (blogDAO.addBlog(blog)) {
 			return new ResponseEntity<String>("Blog Added- Success", HttpStatus.OK);
 		} else {
@@ -53,8 +49,8 @@ public class BlogController
 	// -----------------list Blogs ---------------------------------
 
 	@GetMapping(value = "/listBlogs")
-	public ResponseEntity<List<Blog>> listBlog(HttpSession session) {
-		List<Blog> listBlogs = blogDAO.listBlog((String) session.getAttribute("loginname"));
+	public ResponseEntity<List<Blog>> listBlog() {
+		List<Blog> listBlogs = blogDAO.listBlog();
 		if (listBlogs.size() != 0) {
 			return new ResponseEntity<List<Blog>>(listBlogs, HttpStatus.OK);
 		} else {

@@ -3,8 +3,6 @@ package com.niit.controller;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +30,7 @@ public class ForumController {
 	@PostMapping(value = "/addForum")
 	public ResponseEntity<String> addForum(@RequestBody Forum forum) {
 		forum.setCreatedDate(new Date());
-		forum.setStatus("NA");
+		forum.setStatus("A");
 		if (forumDAO.addForum(forum)) {
 			return new ResponseEntity<String>("Forum Added- Success", HttpStatus.OK);
 		} else {
@@ -43,8 +41,8 @@ public class ForumController {
 	// -----------------list Forums ---------------------------------
 
 	@GetMapping(value = "/listForums")
-	public ResponseEntity<List<Forum>> listForum(HttpSession session) {
-		List<Forum> listForums = forumDAO.listForum((String)session.getAttribute("loginname"));
+	public ResponseEntity<List<Forum>> listForum() {
+		List<Forum> listForums = forumDAO.listForum();
 		if (listForums.size() != 0) {
 			return new ResponseEntity<List<Forum>>(listForums, HttpStatus.OK);
 		} else {
