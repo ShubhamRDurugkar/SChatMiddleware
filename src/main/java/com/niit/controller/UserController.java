@@ -32,14 +32,23 @@ public class UserController {
 		{
 			UserDetail tempUser=(UserDetail)userDAO.getUser(userDetail.getLoginname());
 			userDAO.updateOnlineStatus("Y", tempUser);
-			session.setAttribute("userdetail",tempUser);
+			session.setAttribute("loginname",userDetail.getLoginname());
 			return new ResponseEntity<UserDetail>(tempUser,HttpStatus.OK);
 		}
 		else
 		{
-			return new ResponseEntity<>(userDetail,HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<UserDetail>(userDetail,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	//------------------LogOut-----------------
+		@PostMapping(value="/logout")
+		public ResponseEntity<UserDetail> logout(@RequestBody UserDetail userDetail)
+		{
+			
+				UserDetail tempUser=(UserDetail)userDAO.getUser(userDetail.getLoginname());
+				userDAO.updateOnlineStatus("N", tempUser);
+				return new ResponseEntity<UserDetail>(tempUser,HttpStatus.OK);
+		}
 	
 	// ----------------- Register User ---------------
 	@PostMapping(value = "/registerUser")
@@ -106,8 +115,5 @@ public class UserController {
 			return new ResponseEntity<String>("User with LoginName " + loginname + " deleted successfully", HttpStatus.OK);
 		}
 	}
-	
-	
-	//--------------------------------------Upload image-----------------------------------------
 	
 }
