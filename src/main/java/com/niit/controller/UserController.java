@@ -33,6 +33,7 @@ public class UserController {
 			UserDetail tempUser=(UserDetail)userDAO.getUser(userDetail.getLoginname());
 			userDAO.updateOnlineStatus("Y", tempUser);
 			session.setAttribute("userdetail",tempUser);
+			session.setAttribute("loginname",userDetail.getLoginname());
 			return new ResponseEntity<UserDetail>(tempUser,HttpStatus.OK);
 		}
 		else

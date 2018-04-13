@@ -74,8 +74,8 @@ public class FriendController {
 	@GetMapping(value="/showPendingRequests")
 	public ResponseEntity<List<Friend>> showPendingFriendRequests(HttpSession session)
 	{
-		//String loginname=((UserDetail)session.getAttribute(("userdetail"))).getLoginname();
-		List<Friend> listPendingRequests=friendDAO.showRequestPendingList("Shubham");
+		String loginname=((UserDetail)session.getAttribute(("userdetail"))).getLoginname();
+		List<Friend> listPendingRequests=friendDAO.showRequestPendingList(loginname);
 		if(listPendingRequests.size()>0)
 		{
 			return new 	ResponseEntity<List<Friend>>(listPendingRequests,HttpStatus.OK);	
@@ -83,6 +83,20 @@ public class FriendController {
 		else
 		{
 			return new ResponseEntity<List<Friend>>(listPendingRequests,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	@GetMapping(value="/showSuggestedFriends")
+	public ResponseEntity<List<UserDetail>> showSuggestedFriends(HttpSession session)
+	{
+		String loginname=((UserDetail)session.getAttribute(("userdetail"))).getLoginname();
+		List<UserDetail> listsuggestedfriend=friendDAO.showSuggestedFriend(loginname);
+		if(listsuggestedfriend.size()>0)
+		{
+			return new 	ResponseEntity<List<UserDetail>>(listsuggestedfriend,HttpStatus.OK);	
+		}
+		else
+		{
+			return new ResponseEntity<List<UserDetail>>(listsuggestedfriend,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }
