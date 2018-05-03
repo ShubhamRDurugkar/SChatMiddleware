@@ -37,6 +37,7 @@ public class BlogController
 
 	@PostMapping(value = "/addBlog")
 	public ResponseEntity<String> addBlog(@RequestBody Blog blog,HttpSession session) {
+		
 		System.out.println("=====>In addBlog restcontroller");
 		blog.setCreateDate(new java.util.Date());
 		blog.setLikes(0);
@@ -53,10 +54,11 @@ public class BlogController
 
 	@GetMapping(value = "/listBlogs")
 	public ResponseEntity<List<Blog>> listBlog(HttpSession session) {
-		List<Blog> listBlogs = blogDAO.listBlog((String) session.getAttribute("loginname"));
-		if (listBlogs.size() != 0) {
+		List<Blog> listBlogs = blogDAO.listBlog();
+		//List<Blog> listAllBlogs = blogDAO.listBlog((String) session.getAttribute("adminlogin"));
+		if(listBlogs.size()!=0){
 			return new ResponseEntity<List<Blog>>(listBlogs, HttpStatus.OK);
-		} else {
+		}else{
 			return new ResponseEntity<List<Blog>>(listBlogs, HttpStatus.NOT_FOUND);
 		}
 	}

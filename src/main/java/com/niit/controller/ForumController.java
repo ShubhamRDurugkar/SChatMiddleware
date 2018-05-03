@@ -32,7 +32,7 @@ public class ForumController {
 	@PostMapping(value = "/addForum")
 	public ResponseEntity<String> addForum(@RequestBody Forum forum) {
 		forum.setCreatedDate(new Date());
-		forum.setStatus("A");
+		forum.setStatus("NA");
 		if (forumDAO.addForum(forum)) {
 			return new ResponseEntity<String>("Forum Added- Success", HttpStatus.OK);
 		} else {
@@ -44,7 +44,7 @@ public class ForumController {
 
 	@GetMapping(value = "/listForums")
 	public ResponseEntity<List<Forum>> listForum(HttpSession session) {
-		List<Forum> listForums = forumDAO.listForum((String) session.getAttribute("loginname"));
+		List<Forum> listForums = forumDAO.listForum();
 		if (listForums.size() != 0) {
 			return new ResponseEntity<List<Forum>>(listForums, HttpStatus.OK);
 		} else {
@@ -148,11 +148,7 @@ public class ForumController {
 			forumComment.setCommentText(forumComment.getCommentText());
 			forumComment.setLoginname(forumComment.getLoginname());
 		
-			/*Forum forum = forumDAO.getForum(1);
-			String username = forum.getUsername();
-			int forumId = forum.getForumId();
-			forumComment.setForumId(forumId);
-			forumComment.setUsername(username);*/
+			
 			
 			if (forumDAO.addForumComment(forumComment)) {
 				return new ResponseEntity<String>("ForumComment Added- Success", HttpStatus.OK);
@@ -191,10 +187,10 @@ public class ForumController {
 		}
 
 		// -----------------list Forums ---------------------------------
-		@GetMapping(value = "/listForumComments")
-		public ResponseEntity<List<ForumComment>> listForumComments() {
+		@GetMapping(value = "/listForumComments/{forumId}")
+		public ResponseEntity<List<ForumComment>> listForumComments(@PathVariable("forumId")int forumId) {
 			System.out.println("In listForumComments() method");
-			List<ForumComment> listForumComments = forumDAO.listForumComments(1);
+			List<ForumComment> listForumComments = forumDAO.listForumComments(forumId);
 			if (listForumComments.size() != 0) {
 				return new ResponseEntity<List<ForumComment>>(listForumComments, HttpStatus.OK);
 			} else {
